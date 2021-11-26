@@ -1,82 +1,77 @@
 :set number
 :set relativenumber
+:set hlsearch
+:set ignorecase
+:set smartcase
 :set autoindent
 :set tabstop=4
 :set shiftwidth=4
 :set smarttab
 :set softtabstop=4
+:set noswapfile "disable the swapfile"
+:set nowrap
+:set expandtab
 
-inoremap jk <esc>
+
+inoremap jk <ESC>
+let mapleader=""
 
 call plug#begin()
 
- "colorscheme"
- Plug 'dracula/vim'
- Plug 'joshdick/onedark.vim'
+Plug 'joshdick/onedark.vim'
+Plug 'morhetz/gruvbox'
 
- "surround and commentary"
- Plug 'http://github.com/tpope/vim-surround' 
- Plug 'https://github.com/tpope/vim-commentary' 
+Plug 'tpope/vim-sensible'
+Plug 'https://github.com/tpope/vim-surround' " Surrounding ysw)
+Plug 'https://github.com/preservim/nerdtree' " NerdTree
+Plug 'https://github.com/tpope/vim-commentary' " For Commenting gcc & gc
+Plug 'https://github.com/vim-airline/vim-airline' " Status bar
+Plug 'https://github.com/ap/vim-css-color' " CSS Color Preview
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+let g:coc_global_extensions = ['coc-emmet', 'coc-css', 'coc-html', 'coc-json', 'coc-diagnostic', 'coc-prettier', 'coc-tsserver']
+Plug 'ryanoasis/vim-devicons'
 
- "NerdTree"
- Plug 'https://github.com/preservim/nerdtree'
-
- "Status bar
- Plug 'https://github.com/vim-airline/vim-airline'
-
- " CSS Color Preview "
- Plug 'https://github.com/ap/vim-css-color'
-
- "file searching"
- Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
- Plug 'junegunn/fzf.vim'
-
- "auto completion"
- Plug 'neoclide/coc.nvim', {'branch': 'release'}
- let g:coc_global_extensions = ['coc-emmet', 'coc-css', 'coc-html', 'coc-json', 'coc-prettier', 'coc-tsserver']
- Plug 'leafgarland/typescript-vim'
- Plug 'peitalin/vim-jsx-typescript'
-
- "file icons"
- Plug 'ryanoasis/vim-devicons'
-
-set encoding=UTF-8
+set encoding=utf8
 
 call plug#end()
 
-let g:airline_powerline_fonts = 1
-
-let $FZF_DEFAULT_COMMAND = 'ag -g ""'
-
-if (has("termguicolors"))
- set termguicolors
-endif
-syntax enable
-colorscheme onedark
+"----------------- config section ---------------------"
 
 let g:NERDTreeShowHidden = 1
 let g:NERDTreeMinimalUI = 1
 let g:NERDTreeIgnore = []
 let g:NERDTreeStatusline = ''
+
+let $FZF_DEFAULT_COMMAND = 'ag -g ""'
+
 " Automaticaly close nvim if NERDTree is only thing left open
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-" Toggle
+
+" Toggle "
 nnoremap <silent> <C-b> :NERDTreeToggle<CR>
 
 
+" Terminal "
+
 " open new split panes to right and below
-set splitright
-set splitbelow
+:set splitright
+:set splitbelow
+
 " turn terminal to normal mode with escape
 tnoremap <Esc> <C-\><C-n>
+
 " start terminal in insert mode
 au BufEnter * if &buftype == 'terminal' | :startinsert | endif
+
 " open terminal on ctrl+n
 function! OpenTerminal()
   split term://bash
   resize 10
 endfunction
 nnoremap <c-n> :call OpenTerminal()<CR>
+
 
 " use alt+hjkl to move between split/vsplit panels
 tnoremap <A-h> <C-\><C-n><C-w>h
@@ -88,7 +83,7 @@ nnoremap <A-j> <C-w>j
 nnoremap <A-k> <C-w>k
 nnoremap <A-l> <C-w>l
 
-
+"File searching fzf"
 nnoremap <C-p> :FZF<CR>
 let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
@@ -96,6 +91,17 @@ let g:fzf_action = {
   \ 'ctrl-v': 'vsplit'
   \}
 
+let g:airline_powerline_fonts = 1
+
+"--------------------------------------------------------"
+
+syntax enable
+colorscheme gruvbox 
+
+" coc config "
+" Set internal encoding of vim, not needed on neovim, since coc.nvim using some
+" unicode characters in the file autoload/float.vim
+set encoding=utf-8
 
 " TextEdit might fail if hidden is not set.
 set hidden
